@@ -20,12 +20,31 @@ function analyzePageBrightness() {
   return getBrightness(r, g, b);
 }
 
-function applyComfortFilter(intensity = 0.92) {
-  document.documentElement.style.filter = `
-    brightness(${intensity})
-    contrast(0.96)
-    saturate(0.95)
-  `;
+function applyComfortOverlay(opacity = 0.08) {
+  const existing = document.getElementById("eyeease-overlay");
+
+  if (existing) return;
+
+  const overlay = document.createElement("div");
+
+  overlay.id = "eyeease-overlay";
+
+  overlay.style.position = "fixed";
+  overlay.style.top = "0";
+  overlay.style.left = "0";
+
+  overlay.style.width = "100vw";
+  overlay.style.height = "100vh";
+
+  overlay.style.pointerEvents = "none";
+
+  overlay.style.zIndex = "999999999";
+
+  overlay.style.background = `rgba(255, 180, 120, ${opacity})`;
+
+  overlay.style.mixBlendMode = "multiply";
+
+  document.body.appendChild(overlay);
 }
 
 function applyNightComfort() {
@@ -39,17 +58,14 @@ function applyNightComfort() {
 function initializeEyeEase() {
   chrome.storage.local.get(["enabled", "intensity"], (data) => {
     const enabled = data.enabled ?? true;
-    const intensity = data.intensity ?? 0.92;
 
-    if (!enabled) return;
-
-    const brightness = analyzePageBrightness();
     if (!enabled) return;
 
     const brightness = analyzePageBrightness();
 
     if (brightness > 180) {
-      applyComfortFilter(intensity);
+      applyComfortOverlay(0.1);
+
       applyNightComfort();
     }
   });
