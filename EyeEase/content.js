@@ -20,31 +20,38 @@ function analyzePageBrightness() {
   return getBrightness(r, g, b);
 }
 
-function applyComfortOverlay(opacity = 0.08) {
-  const existing = document.getElementById("eyeease-overlay");
+function applyComfortOverlay(opacity = 0.1) {
+  let overlay = document.getElementById("eyeease-overlay");
 
-  if (existing) return;
+  if (!overlay) {
+    overlay = document.createElement("div");
 
-  const overlay = document.createElement("div");
+    overlay.id = "eyeease-overlay";
 
-  overlay.id = "eyeease-overlay";
+    overlay.style.position = "fixed";
+    overlay.style.top = "0";
+    overlay.style.left = "0";
 
-  overlay.style.position = "fixed";
-  overlay.style.top = "0";
-  overlay.style.left = "0";
+    overlay.style.width = "100vw";
+    overlay.style.height = "100vh";
 
-  overlay.style.width = "100vw";
-  overlay.style.height = "100vh";
+    overlay.style.pointerEvents = "none";
 
-  overlay.style.pointerEvents = "none";
+    overlay.style.zIndex = "999999999";
 
-  overlay.style.zIndex = "999999999";
+    overlay.style.mixBlendMode = 'soft-light';
 
-  overlay.style.background = `rgba(255, 180, 120, ${opacity})`;
+    document.body.appendChild(overlay);
+  }
 
-  overlay.style.mixBlendMode = "multiply";
+  overlay.style.backdropFilter = `
+  brightness(0.96)
+  saturate(0.92)
+  contrast(0.94)
+`;
 
-  document.body.appendChild(overlay);
+overlay.style.background =
+  `rgba(255, 210, 160, ${opacity})`;
 }
 
 function applyNightComfort() {
@@ -64,7 +71,9 @@ function initializeEyeEase() {
     const brightness = analyzePageBrightness();
 
     if (brightness > 180) {
-      applyComfortOverlay(0.1);
+      const overlayOpacity = (1 - intensity) * 1.8;
+
+      applyComfortOverlay(overlayOpacity);
 
       applyNightComfort();
     }
@@ -72,3 +81,29 @@ function initializeEyeEase() {
 }
 
 initializeEyeEase();
+
+chrome.storage.onChanged.addListener((changes) => {
+
+  if (changes.intensity) {
+
+    const intensity = changes.intensity.newValue;
+
+    const overlayOpacity = (1 - intensity) * 1.8;
+
+    applyComfortOverlay(overlayOpacity);
+  }
+
+  if (changes.enabled) {
+
+    const enabled = changes.enabled.newValue;
+
+    const overlay =
+      document.getElementById('eyeease-overlay');
+
+    if (overlay) {
+
+      overlay.style.display =
+        enabled ? 'block' : 'none';
+    }
+  }
+});
