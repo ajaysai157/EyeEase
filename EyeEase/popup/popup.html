@@ -9,20 +9,55 @@
 <body>
 
     <div class="container">
-        <h1>EyeEase</h1>
 
-        <label>
-            <input type="checkbox" id="toggle">
-            Enable Protection
-        </label>
-
-        <div class="slider-box">
-            <p>Comfort Intensity</p>
-            <input type="range" min="0.75" max="1" step="0.01" id="intensity">
+        <div class="header">
+            <h1>EyeEase</h1>
+            <p>Adaptive Visual Comfort</p>
         </div>
+
+        <div class="toggle-card">
+
+            <span>Protection</span>
+
+            <label class="switch">
+                <input type="checkbox" id="toggle">
+                <span class="slider"></span>
+            </label>
+
+        </div>
+
+        <div class="card">
+
+            <div class="row">
+
+                <span>Comfort Level</span>
+
+                <span id="intensity-value">
+                    50%
+                </span>
+
+            </div>
+
+            <input type="range" min="0" max="100" value="50" id="intensity">
+
+        </div>
+
+        <div class="mode-card">
+
+            <div class="mode-title">
+                Current Mode
+            </div>
+
+            <div id="current-mode">
+                Adaptive
+            </div>
+
+        </div>
+
     </div>
 
     <script src="popup.js"></script>
+
 </body>
 
 </html>

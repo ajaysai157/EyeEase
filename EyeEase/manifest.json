@@ -1,33 +1,25 @@
 {
-    "manifest_version": 3,
-    "name": "EyeEase",
-    "version": "1.0",
-    "description": "Adaptive eye comfort extension for better screen viewing.",
-    "permissions": [
-        "storage",
-        "activeTab",
-        "scripting"
-    ],
-    "host_permissions": [
-        "<all_urls>"
-    ],
-    "background": {
-        "service_worker": "background.js"
-    },
-    "action": {
-        "default_popup": "popup/popup.html"
-    },
-    "content_scripts": [
-        {
-            "matches": [
-                "<all_urls>"
-            ],
-            "js": [
-                "content.js"
-            ],
-            "css": [
-                "styles/overlay.css"
-            ]
-        }
-    ]
+  "manifest_version": 3,
+  "name": "EyeEase",
+  "version": "1.0",
+  "description": "Adaptive eye comfort extension for better screen viewing.",
+
+  "permissions": ["storage", "activeTab", "scripting"],
+  "host_permissions": ["<all_urls>"],
+
+  "background": {
+    "service_worker": "background.js"
+  },
+
+  "action": {
+    "default_popup": "popup/popup.html"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["styles/overlay.css"]
+    }
+  ]
 }

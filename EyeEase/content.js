@@ -111,7 +111,7 @@ function applyComfortOverlay(opacity = 0.1) {
 
   let overlay = document.getElementById("eyeease-overlay");
 
-  // CREATE OVERLAY ONLY ONCE
+  // Create overlay once
   if (!overlay) {
     overlay = document.createElement("div");
 
@@ -200,7 +200,7 @@ function applyComfortOverlay(opacity = 0.1) {
   }
 
   // =========================
-  // ADAPTIVE DEFAULT MODE
+  // DEFAULT ADAPTIVE MODE
   // =========================
   else {
     // Very Bright Pages
@@ -255,9 +255,8 @@ function initializeEyeEase() {
     if (!enabled) return;
 
     // Better perceptual scaling
-    const normalized = 1 - intensity;
 
-    const overlayOpacity = Math.pow(normalized, 0.6) * 0.75;
+    const overlayOpacity = Math.pow(intensity, 0.7) * 0.75;
 
     applyComfortOverlay(overlayOpacity);
 
@@ -302,7 +301,7 @@ const observer = new MutationObserver(() => {
   }
 });
 
-// Wait until page loads
+// Wait until page fully loads
 window.addEventListener("load", () => {
   observer.observe(document.body, {
     childList: true,
